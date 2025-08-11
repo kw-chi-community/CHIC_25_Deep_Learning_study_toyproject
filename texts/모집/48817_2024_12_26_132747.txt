@@ -1,0 +1,28 @@
+일자
+주제
+교육내용
+철동로부의 스거
+1.
+3. 안전기능 해제
+4. 스동 조작 방법 길 좌드계
+일차
+Basic Training
+5. 환경 설정
+6
+프로그럼 기초
+7 .
+로봇의 기능
+8. 작업 환경 설정 + 안전설정
+1.
+Task Builder 길 Task Writer 스개
+2 일차
+Core Training1
+2
+Command 길 Skill 사름
+1-
+3 일차
+Core Training2
+3.
+Pick & Place 실습
+산업용 통신 거요
+4

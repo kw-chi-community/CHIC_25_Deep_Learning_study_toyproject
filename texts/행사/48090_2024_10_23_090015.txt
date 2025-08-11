@@ -1,0 +1,35 @@
+Video Dev Days
+The Open Multimedia Conference
+November 2nd
+3rd, 2024 Seoul, Korea
+Kwangwoon University Saebit Hall
+오른
+멀티미디어
+컨퍼런스
+2. (토)~11. 3. (일)
+2024
+11 .
+광운대학교
+새빛관
+VideoLAN
+and
+open-source
+multimedia
+communities
+discuss
+and
+collaborate on
+advancing the future of open-source multimedia. In-depth
+multimedia topics, including codecs and their implementations such
+VideoLAN
+aS
+X264 and david,
+as well as frameworks like FFmpeg and projects like
+광운대화교
+VideoLAN
+VLC
+Kodi, libplacebo mpv and related projects
+Scan QR-
+Code for information, program and free registration.
+ORGANIZATION
+Geminisoft
