@@ -1,0 +1,67 @@
+DEVNET
+Cisco Developers Connect
+SuperCAT (Cisco API Training)
+일시
+2024년 10월8일화) 09:30~17:00
+장소
+광운대-시스코 이노베이선 센터
+안녕하세요
+광운대-시스코 이노베이선 센터입니다.
+이번 시간은 'Open source 모니터랑 tool올 이용한 네트위크 장비 모니터림' 올 주제로
+Catalyst 9K 장비의 새로운 telemetry 전달 방법인 Netconf/Yang에l 대해 알아보고
+학습 및 실습올 진행합니다.
+본 행사는 Network와} monitoring에 대해 관심있는 누구나 참가 가능 합니다.
+신청하기
+행사 일정
+시간
+세션
+09:30~09.50
+(20분)
+행사 등록
+09:50~10.00
+(10분)
+시스코 & 이노베이선 센터소개
+1000~77:00
+(60분)
+NetconflYang/Grafana이해
+11:10~12.00
+(50분)
+Catalyst 9K와 Grafana 실습 7
+12.00~13.00
+(60분)
+점심식사
+13.00~14:00
+(60분)
+Catalyst 9K와} Grafana 실습 2
+1400~16.00 (120분)
+개별 과제
+16.00~17:00
+(6O분)
+개별 과제 확인 및 마무리
+세선 발표자
+최우성 프로
+조준희 프로
+Solutions Engineer
+High Touch Engineer
+EN
+CX
+행사 안내
+1
+2.
+실습 세선올 위한 개인 노트북 지참 필수입니다.
+원활한 행사 진행을 위하여 반드시 사전등록 부탁드립니다.
+3
+4.
+참석해주신 분들께 점심식사와 소정의 기념품올 드립니다:
+5.
+찾아오시는 길 (클렉)
+광운대-시스코 이노베이선 센터
+(서울시 노원구 광운로 20, 광운대학교 비마관 102호
+1호선 광운대역 기준 도보 10분
+행사 문의 (클리)
+장인혜 프로 010-3316-1778
+inhjang@cisco.com
+02024 Cisco Systems, Inc. andlor its affiliates
+All rights reserved Cisco.com
+Privacy Statement
+Trademarks
