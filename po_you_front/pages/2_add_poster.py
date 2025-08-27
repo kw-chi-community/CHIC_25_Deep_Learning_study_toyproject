@@ -1,111 +1,119 @@
-# pages/2_add_poster.py — 고정폭 960px, 좌우 여백, Save 버튼 오른쪽 붙이기
 import streamlit as st
-from common import add_poster
+from common import add_poster_files, predict_category
+import os
+from datetime import date
 
 st.set_page_config(page_title="Po-You — Add Poster", page_icon="➕", layout="wide")
 
-# ===== 핵심 CSS: Streamlit 기본 컨테이너를 '진짜' 고정폭 + 패딩, 버튼 우측 정렬 =====
+# --- CSS ---
 st.markdown("""
 <style>
-/* 1) 메인 컨테이너 고정폭 + 가운데 정렬 + 좌우 여백 */
-main .block-container{
-  width:960px !important;          /* ← 고정폭 (max-width 아님) */
+:root{ --primary-color: #067161; }
+
+main .block-container {
+  width:960px !important;
   max-width:960px !important;
-  margin-left:auto !important;
-  margin-right:auto !important;
-  padding-left:32px !important;    /* 넉넉한 좌우 여백 */
-  padding-right:32px !important;
+  margin:auto !important;
+  padding:0 32px !important;
 }
 
-/* 2) 폰트 살짝 확대 */
-div.stTextInput label, div.stTextArea label, div.stMultiSelect label, div.stFileUploader label{
-  font-size:1.1rem; font-weight:600;
-}
-div.stTextInput input, div.stTextArea textarea, div.stMultiSelect div, div.stFileUploader{
-  font-size:1.05rem;
+div.stTextInput label,
+div.stTextArea label,
+div.stFileUploader label,
+div.stDateInput label,
+div.stSelectbox label,
+div.stCheckbox label {
+  font-size:1.1rem;
+  font-weight:600;
 }
 
-/* 3) Save 버튼 오른쪽 붙이기: 래퍼를 flex-end */
-div.stForm div.stFormSubmitButton,
-div[data-testid="stFormSubmitButton"]{
+div[data-testid="stFormSubmitButton"] {
   display:flex !important;
-  justify-content:flex-end !important;   /* ← 오른쪽 끝 */
+  justify-content:flex-end !important;
 }
 
-/* 버튼 스타일 + hover */
-div[data-testid="stFormSubmitButton"] button{
-  background:#4F8BF9 !important;
+div[data-testid="stFormSubmitButton"] button {
+  background: var(--primary-color) !important;
   color:#fff !important;
   font-weight:700 !important;
   font-size:1rem !important;
   padding:.5rem 1.2rem !important;
   border:none !important;
   border-radius:8px !important;
-  transition:background-color .2s ease-in-out !important;
 }
-div[data-testid="stFormSubmitButton"] button:hover{
-  background:#1E6FE1 !important;
+
+/* 비활성화된 날짜 입력창 스타일 */
+div[data-testid="stDateInput"][disabled] {
+  cursor: not-allowed;
+}
+div[data-testid="stDateInput"][disabled] label,
+div[data-testid="stDateInput"][disabled] input {
+  opacity: 0.5;
 }
 </style>
+
 """, unsafe_allow_html=True)
 
+# --- 입력 폼 ---
 CATEGORIES = ["대회", "모집", "자금", "진로", "행사", "기타"]
+st.markdown("### ➕ 새 포스터 추가")
 
-st.markdown("### Add Poster")
+with st.form("add_form", clear_on_submit=True):
+    title = st.text_input("제목 *", max_chars=120)
+    description = st.text_area("상세 설명", height=160)
+    
+    c1, c2 = st.columns(2)
+    
+    is_disabled = st.session_state.get('no_period_check', False)
+    
+    start_date = c1.date_input("시작일", value=date.today(), disabled=is_disabled)
+    end_date = c2.date_input("마감일", value=date.today(), disabled=is_disabled)
+    
+    no_period = st.checkbox("모집 기간 정보 없음", key='no_period_check')
+    
+    sub_categories = st.text_input("세부 카테고리 (쉼표로 구분)", placeholder="예: IT, AI, 스타트업")
+    st.markdown("---")
+    st.markdown("**대상 정보**")
+    c1, c2, c3 = st.columns(3)
+    target_age = c1.text_input("연령", placeholder="예: 대학생")
+    target_region = c2.text_input("지역", placeholder="예: 전국")
+    target_etc = c3.text_input("기타 조건 (쉼표로 구분)", placeholder="예: 휴학생 가능")
+    hosts = st.text_input("주최 기관 (쉼표로 구분)", placeholder="예: 코딩대학교")
+    
+    temp_form_data = { "제목": title, "설명": description, "세부카테고리": sub_categories.split(','), "주최기관": hosts.split(','), "대상": {"연령":target_age, "지역":target_region, "특이조건":target_etc.split(',')}}
+    predicted_category = predict_category(temp_form_data)
+    category_index = CATEGORIES.index(predicted_category) if predicted_category in CATEGORIES else 0
+    category = st.selectbox("주요 카테고리 * ", CATEGORIES, index=category_index)
+    
+    file = st.file_uploader("포스터 이미지 파일 *", type=["png", "jpg", "jpeg", "webp"])
+    submitted = st.form_submit_button("포스터 저장하기")
 
-with st.form("add_form", clear_on_submit=False):
-    title = st.text_input("Title * (≤120)", max_chars=120)
-    desc  = st.text_area("Description", height=160)
-
-    sel_cats   = st.multiselect("Categories (multi-select)", CATEGORIES, help="대회/모집/자금/진로/행사/기타 중 복수 선택 가능")
-    tags_input = st.text_input("Tags (comma-separated: contest, seminar, festival)")
-    file = st.file_uploader("Poster Image * (png/jpg/jpeg/webp, ≤2MB)", type=["png","jpg","jpeg","webp"])
-
-    submitted = st.form_submit_button("Save Poster")   # ← 이제 오른쪽에 붙음
-
-def _merge_tags(tags_text: str, selected: list) -> str:
-    base = [t.strip() for t in (tags_text or "").split(",") if t.strip()]
-    for c in selected or []:
-        if c not in base:
-            base.append(c)
-    return ", ".join(base)
+# --- 폼 제출 후 로직 ---
+if 'newly_added_pid' not in st.session_state: st.session_state.newly_added_pid = None
 
 if submitted:
-    if not title:
-        st.error("Title is required."); st.stop()
-    if not file:
-        st.error("Poster image is required."); st.stop()
+    if not all([title, category, hosts, file]):
+        st.error("필수 항목(*)을 모두 입력하거나 파일을 첨부해주세요.")
+    else:
+        _, extension = os.path.splitext(file.name)
+        form_data = {
+            "제목": title, "설명": description, "카테고리": category,
+            "세부카테고리": [s.strip() for s in sub_categories.split(',') if s.strip()],
+            "대상": {"연령": target_age, "지역": target_region, "특이조건": [t.strip() for t in target_etc.split(',') if t.strip()]},
+            "기간": {"start": "" if no_period else start_date.isoformat(), "end": "" if no_period else end_date.isoformat()},
+            "주최기관": [h.strip() for h in hosts.split(',') if h.strip()]
+        }
+        try:
+            pid = add_poster_files(form_data, file.getvalue(), extension.lower())
+            st.session_state.newly_added_pid = pid
+            st.rerun()
+        except Exception as e:
+            st.error(f"저장에 실패했습니다: {e}")
 
-    # 2MB 제한
-    try:
-        size_ok = getattr(file, "size", None)
-    except Exception:
-        size_ok = None
-    if size_ok is not None and size_ok > 2 * 1024 * 1024:
-        st.error("File too large (max 2MB)."); st.stop()
-
-    # 확장자
-    suffix = None
-    try:
-        if getattr(file, "type", ""):
-            suffix = file.type.split("/")[-1].lower()
-        if (not suffix or suffix not in {"png","jpg","jpeg","webp"}) and getattr(file, "name", ""):
-            name = file.name.lower()
-            for ext in ("png","jpg","jpeg","webp"):
-                if name.endswith("." + ext):
-                    suffix = ext; break
-    except Exception:
-        pass
-    if suffix not in {"png","jpg","jpeg","webp"}:
-        st.error("Unsupported image format. Use png/jpg/jpeg/webp."); st.stop()
-
-    tags_final = _merge_tags(tags_input, sel_cats)
-
-    try:
-        pid = add_poster(title, desc, tags_final, file.read(), suffix)
-        st.session_state["detail_id"] = pid
-        st.success("Poster saved successfully!")
-        st.page_link("pages/1_home.py",  label="🏠 Go to Home")
-        st.page_link("pages/3_detail.py", label="🖼️ Open Detail Page")
-    except Exception as e:
-        st.error(f"Failed to save poster: {e}")
+if st.session_state.newly_added_pid:
+    st.success(f"포스터가 성공적으로 저장되었습니다!")
+    st.page_link("pages/1_home.py", label="🏠 홈으로 가기")
+    if st.button("🖼️ 방금 추가한 포스터 보기"):
+        st.session_state.pid = st.session_state.newly_added_pid
+        st.session_state.newly_added_pid = None
+        st.switch_page("pages/3_detail.py")
