@@ -1,0 +1,27 @@
+{
+  "제목": "Kirimkan barang ke Indonesia melalui pos dengan EMS",
+  "설명": "Kirimkan barang ke Indonesia melalui pos dengan EMS Pembebasan bea pos internasional untuk tenaga kerja Indonesia dan mahasiswa Indonesia. Syarat: BP2MI terdaftar, kontrak kerja, ijazah kelulusan. Batas pembebasan pajak: maksimal 3 kali setahun (500 USD).",
+  "카테고리": "기타",
+  "세부카테고리": [
+    "Indonesia",
+    "EMS",
+    "Tenaga kerja",
+    "Mahasiswa",
+    "Bebas Bea"
+  ],
+  "대상": {
+    "연령": "기타",
+    "지역": "전국",
+    "특이조건": [
+      "Indonesian migrant workers",
+      "Indonesian students"
+    ]
+  },
+  "기간": {
+    "start": null,
+    "end": null
+  },
+  "주최기관": [
+    "Korea Post"
+  ]
+}

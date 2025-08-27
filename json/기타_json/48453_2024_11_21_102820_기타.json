@@ -1,0 +1,27 @@
+{
+  "제목": "Industrial Accident Prevention Guide",
+  "설명": "Industrial Accident Prevention Guide Occupational Safety and Health Education: employer’s obligation, categorized into regular training, hiring training, job change training, and special training. Safety and Health Contents: hazards causes explanation, safe practices, VR zone, safety experience centers. Industrial Accident Compensation Insurance: government compensates work-related injuries, supports treatment, livelihood, and return to work.",
+  "카테고리": "기타",
+  "세부카테고리": [
+    "Industrial Accident",
+    "Prevention",
+    "Safety",
+    "Health",
+    "Insurance"
+  ],
+  "대상": {
+    "연령": "청년",
+    "지역": "전국",
+    "특이조건": [
+      "International students in Korea"
+    ]
+  },
+  "기간": {
+    "start": null,
+    "end": null
+  },
+  "주최기관": [
+    "Ministry of Employment and Labor",
+    "KOSHA"
+  ]
+}
