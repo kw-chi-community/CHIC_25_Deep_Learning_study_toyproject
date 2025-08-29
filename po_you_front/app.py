@@ -50,10 +50,12 @@ st.markdown("좌측 사이드바 또는 아래 빠른 링크로 이동하세요.
 st.divider()
 
 # --- Quick Links ---
-c1, c2, c3 = st.columns([1, 1, 1])
+c1, c2, c3, c4= st.columns([1, 1, 1, 1])
 with c1:
     st.page_link("pages/1_home.py", label="**🏠 Home**", use_container_width=True)
 with c2:
     st.page_link("pages/2_add_poster.py", label="**➕ Add Poster**", use_container_width=True)
 with c3:
     st.page_link("pages/3_detail.py", label="**🗒️ View All**", use_container_width=True)
+with c4:
+    st.page_link("pages/4_profile_recommend.py", label="**✨ Profile Recommend**", use_container_width=True)

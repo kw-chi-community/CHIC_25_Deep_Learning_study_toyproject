@@ -51,6 +51,10 @@ st.markdown('<div class="wrap">', unsafe_allow_html=True)
 
 pid = st.session_state.get("pid")
 
+params = st.query_params
+if "pid" in params and params.get("pid"):
+    st.session_state["pid"] = str(params.get("pid"))
+
 if pid:
     # --- 1. 특정 포스터 상세 보기 모드 ---
     poster = get_one_poster(pid)
