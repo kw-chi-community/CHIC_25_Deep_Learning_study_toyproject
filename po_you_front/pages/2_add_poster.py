@@ -83,7 +83,7 @@ with st.form("add_form", clear_on_submit=True):
     temp_form_data = { "제목": title, "설명": description, "세부카테고리": sub_categories.split(','), "주최기관": hosts.split(','), "대상": {"연령":target_age, "지역":target_region, "특이조건":target_etc.split(',')}}
     predicted_category = predict_category(temp_form_data)
     category_index = CATEGORIES.index(predicted_category) if predicted_category in CATEGORIES else 0
-    category = st.selectbox("주요 카테고리 * ", CATEGORIES, index=category_index)
+    # category = st.selectbox("주요 카테고리 * ", CATEGORIES, index=category_index)
     
     file = st.file_uploader("포스터 이미지 파일 *", type=["png", "jpg", "jpeg", "webp"])
     submitted = st.form_submit_button("포스터 저장하기")

@@ -7,39 +7,39 @@ st.set_page_config(
     page_title="Po-You — Poster Exhibition",
     layout="wide",
     initial_sidebar_state="expanded",
-    page_icon="📌"
+    page_icon="./po_you_logo.png"
 )
 
 # --- Global CSS ---
 CSS = """
 <style>
-/* 기본 폰트 및 배경색 설정 */
-html, body, [class*="st-"], [class*="css-"] {
-    font-family: 'Pretendard', sans-serif;
-    color: #0d1a2f;
-}
-[data-testid="stAppViewContainer"] > .main {
-    background-color: #f0f2f6;
-}
-.main .block-container {
-    background-color: #FFFFFF;
-    border-radius: 10px;
-    padding: 2rem !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-/* 사이드바 스타일 */
-[data-testid="stSidebar"] {
-    background-color: #FFFFFF;
-    border-right: 1px solid #e5e7eb;
-}
-[data-testid="stSidebar"] a { color: #314159; }
-[data-testid="stSidebar"] a[aria-current="page"] { background-color: #e6f1f0; }
+/* ----- 사이드바 토글 아이콘을 우리 식으로 교체 (단일 블록) ----- */
 
-/* 모든 버튼에 대한 최소한의 공통 스타일만 남깁니다. */
-.stButton > button {
-    border-radius: 8px !important;
-    font-weight: 600 !important;
+/* 세 버전 testid를 한 번에 타깃팅 */
+[data-testid="stSidebarCollapser"],
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stSidebarNavCollapse"] {
+    /* 버튼 안의 기존 텍스트를 보이지 않게 */
+    font-size: 0 !important;
 }
+
+/* 기본 아이콘(svg 등) 완전 숨김 */
+[data-testid="stSidebarCollapser"] svg,
+[data-testid="stSidebarCollapseButton"] svg,
+[data-testid="stSidebarNavCollapse"] svg {
+    display: none !important;
+}
+
+/* 필요 시, 기본 콘텐츠 박스(보조 텍스트)도 차단 */
+[data-testid="stSidebarCollapser"] *:not(svg),
+[data-testid="stSidebarCollapseButton"] *:not(svg),
+[data-testid="stSidebarNavCollapse"] *:not(svg) {
+    /* 글자 공간 차단을 위해 inline 텍스트는 줄여버림 */
+    /* 구조상 다른 요소에 영향이 갈 수 있으므로 font-size:0 방식이 가장 안전 */
+}
+
+/* 우리가 보여줄 아이콘(문자)만 붙이기 */
+[data-testid="stSidebarCollapser"]::after,
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)

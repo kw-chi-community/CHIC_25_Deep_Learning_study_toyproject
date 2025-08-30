@@ -28,7 +28,7 @@ def img_to_data_uri(path):
 CSS = """
 <style>
 :root{ --primary-color: #067161;}
-.h1{ font-size: 2.5rem; font-weight: 800; color: #111827; margin-bottom: 1rem; }
+.h1{ font-size: 2.5rem; font-weight: 800; color: #fff; margin-bottom: 1rem; }
 .catbar{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:1rem; }
 .poster-card { position: relative; text-align: center; }
 .poster-card .title{ font-weight: 700; font-size: 15px; color: #374151; }

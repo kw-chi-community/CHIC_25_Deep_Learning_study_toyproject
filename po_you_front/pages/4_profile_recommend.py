@@ -8,18 +8,14 @@ from common import search_and_rank_posters, predict_category as predict_category
 
 st.set_page_config(page_title="Po-You — Profile Recommend", page_icon="✨", layout="wide")
 
-# ──────────────────────────────────────────────────────────────────────────────
 # URL 쿼리파라미터로 pid가 오면 detail로 즉시 이동 (세션도 세팅)
-# ──────────────────────────────────────────────────────────────────────────────
 params = st.query_params
 if params.get("pid"):
     st.session_state["pid"] = str(params.get("pid"))
     print(f"[DEBUG 4_] query pid detected → {st.session_state['pid']}")
     st.switch_page("pages/3_detail.py")
 
-# ──────────────────────────────────────────────────────────────────────────────
 # poster_rec 아티팩트 로더
-# ──────────────────────────────────────────────────────────────────────────────
 ART_DIR = os.getenv("POSTER_REC_DIR", "artifacts")
 
 @st.cache_resource(show_spinner=False)
@@ -94,7 +90,7 @@ def predict_category_posterrec(rec: dict) -> str:
 CSS = """
 <style>
 :root{ --primary-color: #067161; }
-.h1{ font-size: 2.2rem; font-weight: 800; color: #111827; }
+.h1{ font-size: 2.2rem; font-weight: 800; color: #fff; }
 .status-badge { padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: 700; color: white; }
 .status-open { background-color: var(--primary-color); }
 .status-soon { background-color: #f59e0b; }

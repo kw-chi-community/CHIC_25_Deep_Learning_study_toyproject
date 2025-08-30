@@ -10,7 +10,7 @@ st.set_page_config(page_title="Po-You — Detail", page_icon="📋", layout="wid
 CSS = """
 <style>
 :root{ --primary-color: #067161;}
-.h1{ font-size: 2.5rem; font-weight: 800; color: #111827; }
+.h1{ font-size: 2.5rem; font-weight: 800; color: #fff; }
 .meta{ color: #6b7280; font-size: 1rem; }
 .badge{ color: #374151; background-color: #e5e7eb; border: none; padding: 4px 10px; border-radius: 9999px; font-size: 0.8rem; }
 .info-grid dt { font-weight: 600; color: #1f2937; }
