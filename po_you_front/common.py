@@ -10,6 +10,8 @@ import time
 import uuid 
 import joblib
 import re
+from typing import Any, Dict, List
+
 
 DATA_DIR = "json"
 MODEL_PATH = "category_classifier.pkl"
@@ -203,3 +205,56 @@ def delete_poster_files(pid: str):
         try: os.remove(file)
         except Exception as e: print(f"파일 삭제 실패 {file}: {e}")
     st.cache_data.clear()
+
+MODEL_PATH = os.path.join(os.path.dirname(__file__), "", "model.pkl")
+
+@st.cache_resource(show_spinner=False)
+def load_classifier():
+    """
+    한 번만 로드하여 세션/페이지 전환 시에도 재사용.
+    파이프라인(TfidfVectorizer + LinearSVC)이 저장돼 있다고 가정합니다.
+    """
+    if not os.path.exists(MODEL_PATH):
+        raise FileNotFoundError(f"분류기 파일을 찾을 수 없습니다: {MODEL_PATH}")
+    pipe = joblib.load(MODEL_PATH)
+    return pipe
+
+def _safe_list(x) -> List[str]:
+    if isinstance(x, list):
+        return [str(t).strip() for t in x if str(t).strip()]
+    if x is None:
+        return []
+    return [str(x).strip()]
+
+def _normalize_space(s: str) -> str:
+    return re.sub(r"\s+", " ", s or "").strip()
+
+def _records_to_text(d: Dict[str, Any]) -> str:
+    """
+    학습 때 사용한 '필드 결합 + 공백 정규화' 방식과 맞춥니다.
+    필요한 필드가 더 있다면 여기에 이어붙이세요.
+    """
+    parts = []
+    parts.append(str(d.get("제목", "")))
+    parts.append(str(d.get("설명", "")))
+    parts.extend(_safe_list(d.get("세부카테고리", [])))
+    parts.extend(_safe_list(d.get("주최기관", [])))
+
+    target = d.get("대상", {}) or {}
+    parts.append(str(target.get("연령", "")))
+    parts.append(str(target.get("지역", "")))
+    parts.extend(_safe_list(target.get("특이조건", [])))
+
+    return _normalize_space(" ".join(p for p in parts if p))
+
+def predict_category(form_data: Dict[str, Any]) -> str:
+    """
+    폼 입력(JSON 유사 dict)을 받아 카테고리 라벨(한글)을 1개 반환.
+    학습 라벨과 UI 라벨이 모두 한글이라면 매핑 불필요.
+    """
+    pipe = load_classifier()
+    text = _records_to_text(form_data)
+    # 입력이 너무 비었을 때 보호 로직(선택): 빈 문자열이면 '기타'로 폴백
+    if not text:
+        return "기타"
+    return pipe.predict([text])[0]
