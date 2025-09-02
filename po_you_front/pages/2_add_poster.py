@@ -122,7 +122,6 @@ else:
 category = st.selectbox(
     "주요 카테고리 *",
     CATEGORIES,
-    index=CATEGORIES.index(st.session_state.selected_category),
     key="selected_category",
     help=(f"모델 추천: {predicted_category}" if predicted_category else "모델 추천값이 없어서 기본값으로 설정됩니다.")
 )
