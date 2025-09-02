@@ -90,7 +90,8 @@ with st.expander("🔎 Search / Filter", expanded=True):
             st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
     
-if keyword or tag or selected_cats:
+if keyword or tag or selected_cats or "cats" in params and not selected_cats:
+    # 전체 선택 시 selected_cats는 빈 상태지만, 조건문을 true로 강제로 돌림
     rows = search_and_rank_posters(
         keyword=keyword or None, tag=tag or None,
         categories=selected_cats or None, sort_by=sort_label,
@@ -110,7 +111,10 @@ if keyword or tag or selected_cats:
                     elif status == "시작 전": status_class = "status-soon"
                     elif status == "모집 완료": status_class = "status-closed"
                     else: status_class = "status-tbd"
-                    st.markdown(f'<div class="status-badge-wrapper"><span class="status-badge {status_class}">{status}</span></div>', unsafe_allow_html=True)
+                    st.markdown(
+                        f'<div class="status-badge-wrapper"><span class="status-badge {status_class}">{status}</span></div>', 
+                        unsafe_allow_html=True
+                    )
                     st.image(image_path)
                     st.markdown(f'<div class="title">{title}</div>', unsafe_allow_html=True)
                     if st.button("상세보기", key=f"btn_{pid}", use_container_width=True):

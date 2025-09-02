@@ -1,5 +1,7 @@
 import streamlit as st
 from PIL import Image
+import base64
+from io import BytesIO
 
 Image.MAX_IMAGE_PIXELS = None
 
@@ -13,39 +15,92 @@ st.set_page_config(
 # --- Global CSS ---
 CSS = """
 <style>
-/* ----- 사이드바 토글 아이콘을 우리 식으로 교체 (단일 블록) ----- */
+.stApp { background-color: #ffffff !important; }
 
-/* 세 버전 testid를 한 번에 타깃팅 */
-[data-testid="stSidebarCollapser"],
-[data-testid="stSidebarCollapseButton"],
-[data-testid="stSidebarNavCollapse"] {
-    /* 버튼 안의 기존 텍스트를 보이지 않게 */
-    font-size: 0 !important;
+/* 기본 텍스트 색상 */
+html, body, [class*="css"] { color: #000000 !important; }
+
+/* 제목/문단 색 */
+h1, h2, h3, h4, h5, h6, p, span, div { color: #000000 !important; }
+
+/* 사이드바 */
+[data-testid="stSidebar"] { background-color: #111827 !important; color:#ffffff !important; }
+[data-testid="stSidebar"] * { color:#ffffff !important; }
+
+/* 사이드바 토글(문제되던 콤마 제거!) */
+[data-testid="stSidebarCollapser"]::after { content:""; }
+/* 필요 없으면 위 줄 자체를 삭제해도 됩니다 */
+
+header[data-testid="stHeader"],
+[data-testid="stToolbar"] {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;  /* 그림자 제거 */
 }
 
-/* 기본 아이콘(svg 등) 완전 숨김 */
-[data-testid="stSidebarCollapser"] svg,
-[data-testid="stSidebarCollapseButton"] svg,
-[data-testid="stSidebarNavCollapse"] svg {
-    display: none !important;
+/* ----- HERO ----- */
+.hero {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+  margin: 8px 0 16px 0;
 }
 
-/* 필요 시, 기본 콘텐츠 박스(보조 텍스트)도 차단 */
-[data-testid="stSidebarCollapser"] *:not(svg),
-[data-testid="stSidebarCollapseButton"] *:not(svg),
-[data-testid="stSidebarNavCollapse"] *:not(svg) {
-    /* 글자 공간 차단을 위해 inline 텍스트는 줄여버림 */
-    /* 구조상 다른 요소에 영향이 갈 수 있으므로 font-size:0 방식이 가장 안전 */
+.hero-logo {
+  width: 200px;
+  display: block;
+  margin-bottom: 2px;
 }
 
-/* 우리가 보여줄 아이콘(문자)만 붙이기 */
-[data-testid="stSidebarCollapser"]::after,
+.hero-title {
+  color: #067161 !important;
+  font-weight: 800;
+  margin: 0;
+  font-size: 3rem !important;
+  line-height: 1.2;
+}
+
+.hero-sub {
+  font-weight: 500;
+  margin: 1rem 0 0.3rem !important;
+  font-size: 1.5rem !important;
+}
+
+.hero-desc {
+  margin-top: 0.2rem;
+  color: #000000;
+  font-size: 0.95rem;
+}
 </style>
 """
 st.markdown(CSS, unsafe_allow_html=True)
 
-st.title("Po-You: 당신에게 딱 맞는 포스터를 찾아드립니다")
-st.markdown("좌측 사이드바 또는 아래 빠른 링크로 이동하세요.")
+img = Image.open("po_you_logo.png")
+buf = BytesIO()
+img.save(buf, format="PNG")
+b64 = base64.b64encode(buf.getvalue()).decode()
+st.markdown(CSS, unsafe_allow_html=True)
+
+# --- (2) 로고 data URI 준비 ---
+img = Image.open("po_you_logo.png").convert("RGBA")
+buf = BytesIO(); img.save(buf, format="PNG")
+b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
+
+# --- (3) 로고 + 텍스트를 하나의 hero 컨테이너로 ---
+st.markdown(
+    f"""
+    <div class="hero">
+        <img class="hero-logo" src="data:image/png;base64,{b64}" alt="po_you_logo" />
+        <p class="hero-title">Po-You</p>
+        <p class="hero-sub">당신에게 딱 맞는 포스터를 찾아드립니다</p>
+        <p class="hero-desc">좌측 사이드바 또는 아래 빠른 링크로 이동하세요.</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 st.divider()
 
